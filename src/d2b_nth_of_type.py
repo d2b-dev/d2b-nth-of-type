@@ -16,7 +16,7 @@ from typing import Tuple
 from d2b.hookspecs import hookimpl
 
 
-__version__ = "1.0.0rc0"
+__version__ = "1.0.0"
 
 
 class Defaults:
