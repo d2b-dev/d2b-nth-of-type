@@ -163,13 +163,11 @@ descriptions:
 
 This plugin can be configured by via options to the `d2b run` command or via the environment:
 
-- `--nth-of-type-group-by <string>`
+- `--nth-of-type-enabled | --nth-of-type-disabled`
 
-  Which sidecar field(s) to group acquisitions by (default: `SeriesDescription`).
+  Enable or disable this plugin. (default: enabled)
 
-  To group by more then one field pass a comma separated list, ex: `SeriesDescription,RepetitionTime`
-
-  Can also be configured via the `D2B_NTH_OF_TYPE_GROUP_BY` environment variable. The command line argument takes precedence over the environment variable.
+  Can also be configured via the `D2B_NTH_OF_TYPE_ENABLED` environment variable. The command line argument takes precedence over the environment variable.
 
 - `--nth-of-type-sort-by <string>`
 
@@ -178,6 +176,14 @@ This plugin can be configured by via options to the `d2b run` command or via the
   To sort in descending order append `:desc` onto the fieldname, ex: `SeriesNumber:desc`. If no direction/ordering suffix (`:asc`/`:desc`) is present then the acquisitions are sorted in ascending order.
 
   Can also be configured via the `D2B_NTH_OF_TYPE_SORT_BY` environment variable. The command line argument takes precedence over the environment variable.
+
+- `--nth-of-type-group-by <string>`
+
+  Which sidecar field(s) to group acquisitions by (default: `SeriesDescription`).
+
+  To group by more then one field pass a comma separated list, ex: `SeriesDescription,RepetitionTime`
+
+  Can also be configured via the `D2B_NTH_OF_TYPE_GROUP_BY` environment variable. The command line argument takes precedence over the environment variable.
 
 ## Contributing
 
