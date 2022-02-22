@@ -20,10 +20,12 @@ __version__ = "1.0.0rc0"
 
 
 class Defaults:
+    ENABLED = False
     SORT_BY = "SeriesNumber:asc"
     GROUP_BY = "SeriesDescription"
 
 
+D2B_NTH_OF_TYPE_ENABLED = "D2B_NTH_OF_TYPE_ENABLED"
 D2B_NTH_OF_TYPE_SORT_BY = "D2B_NTH_OF_TYPE_SORT_BY"
 D2B_NTH_OF_TYPE_GROUP_BY = "D2B_NTH_OF_TYPE_GROUP_BY"
 
@@ -34,6 +36,24 @@ def prepare_run_parser(optional: argparse._ArgumentGroup) -> None:
 
 
 def add_arguments(parser: argparse.ArgumentParser | argparse._ArgumentGroup):
+    enabled_group = parser.add_mutually_exclusive_group()
+    enabled_group.add_argument(
+        "--nth-of-type-enabled",
+        dest="nth_of_type_enabled",
+        action="store_true",
+        default=_is_yes(os.getenv(D2B_NTH_OF_TYPE_ENABLED, Defaults.ENABLED)),
+        help="Enable the 'd2b-nth-of-type' plugin (default). "
+        "If this flag is not set, then the program will use the value "
+        f"from the environment variable {D2B_NTH_OF_TYPE_ENABLED}",
+    )
+    enabled_group.add_argument(
+        "--nth-of-type-disabled",
+        dest="nth_of_type_enabled",
+        action="store_false",
+        help="Disable the 'd2b-nth-of-type' plugin. "
+        "If this flag is not set, then the program will use the value "
+        f"from the environment variable {D2B_NTH_OF_TYPE_ENABLED}",
+    )
     parser.add_argument(
         "--nth-of-type-sort-by",
         type=str,
@@ -72,8 +92,10 @@ def prepare_collected_files(files: list[Path], options: dict[str, Any]) -> None:
     """Provide files to consider for description <-> file matching"""
     sortby: str = options["nth_of_type_sort_by"]
     groupby: str = options["nth_of_type_group_by"]
+    enabled: bool = options["nth_of_type_enabled"]
 
-    nth_of_type(files, sortby=sortby, groupby=groupby)
+    if enabled:
+        nth_of_type(files, sortby=sortby, groupby=groupby)
 
 
 def nth_of_type(files: list[Path], sortby: str, groupby: str):
@@ -156,3 +178,7 @@ def rewrite_files(grouped_sidcars: GroupedSidecars, sortby: str, groupby: str) -
             sidecar_s = json.dumps(sidecar.data, indent=2)
 
             sidecar.path.write_text(sidecar_s)
+
+
+def _is_yes(v: Any):
+    return str(v).strip() not in ("0", "false", "False", "n", "no", "N", "No" "NO")
