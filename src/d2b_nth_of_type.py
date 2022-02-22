@@ -20,7 +20,7 @@ __version__ = "1.0.0rc0"
 
 
 class Defaults:
-    ENABLED = False
+    ENABLED = True
     SORT_BY = "SeriesNumber:asc"
     GROUP_BY = "SeriesDescription"
 
