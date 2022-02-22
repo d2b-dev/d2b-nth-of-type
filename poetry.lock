@@ -111,7 +111,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "d2b"
-version = "1.4.0rc0"
+version = "1.4.0rc1"
 description = "Organize data in the BIDS format"
 category = "main"
 optional = false
@@ -239,7 +239,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 
 [[package]]
 name = "platformdirs"
-version = "2.5.0"
+version = "2.5.1"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 category = "dev"
 optional = false
@@ -429,7 +429,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "b9e76eb073b51ca4648896cf421c97e78662769b8b9c642fc7712fc519f0988d"
+content-hash = "f44f9cead96ab3651b0bf0ee8196291131ddeda228fe76149bcb7596f225c825"
 
 [metadata.files]
 "aspy.refactor-imports" = [
@@ -494,8 +494,8 @@ colorama = [
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
 ]
 d2b = [
-    {file = "d2b-1.4.0rc0-py3-none-any.whl", hash = "sha256:51030ffb268e2bfc497cfc80df735026328617505d1c990319814d1a0ddd2909"},
-    {file = "d2b-1.4.0rc0.tar.gz", hash = "sha256:c394287a4839b4f9f506a14c8e56055fc3860b0f9138ab72d9aceab79e368257"},
+    {file = "d2b-1.4.0rc1-py3-none-any.whl", hash = "sha256:eb6491bf2935a8222d844cd79cbe5a300048e2d696b4ab0d929829a13c910940"},
+    {file = "d2b-1.4.0rc1.tar.gz", hash = "sha256:14173c7a8d8f88020193425baf9a82ae961eca609db28e6256c29467c751cf71"},
 ]
 distlib = [
     {file = "distlib-0.3.4-py2.py3-none-any.whl", hash = "sha256:6564fe0a8f51e734df6333d08b8b94d4ea8ee6b99b5ed50613f731fd4089f34b"},
@@ -581,8 +581,8 @@ pathspec = [
     {file = "pathspec-0.9.0.tar.gz", hash = "sha256:e564499435a2673d586f6b2130bb5b95f04a3ba06f81b8f895b651a3c76aabb1"},
 ]
 platformdirs = [
-    {file = "platformdirs-2.5.0-py3-none-any.whl", hash = "sha256:30671902352e97b1eafd74ade8e4a694782bd3471685e78c32d0fdfd3aa7e7bb"},
-    {file = "platformdirs-2.5.0.tar.gz", hash = "sha256:8ec11dfba28ecc0715eb5fb0147a87b1bf325f349f3da9aab2cd6b50b96b692b"},
+    {file = "platformdirs-2.5.1-py3-none-any.whl", hash = "sha256:bcae7cab893c2d310a711b70b24efb93334febe65f8de776ee320b517471e227"},
+    {file = "platformdirs-2.5.1.tar.gz", hash = "sha256:7535e70dfa32e84d4b34996ea99c5e432fa29a708d0f4e394bbcb2a8faa4f16d"},
 ]
 pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},

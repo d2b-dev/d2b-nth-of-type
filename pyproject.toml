@@ -33,7 +33,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
-d2b = "^1.4.0rc0"
+d2b = "^1.4.0rc1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
