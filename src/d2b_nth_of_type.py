@@ -4,6 +4,7 @@ import argparse
 import json
 import logging
 import os
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,7 @@ from typing import Dict
 from typing import List
 from typing import NamedTuple
 from typing import Tuple
+from typing import TypeVar
 
 from d2b.hookspecs import hookimpl
 
@@ -107,11 +109,12 @@ def nth_of_type(files: list[Path], sortby: str, groupby: str):
     sidecars = load_sidecars(sidecar_files)
 
     # order the sidecars
-    _sort_key = parse_sort_key(sortby)
-    ordered_sidecars = sort_sidecars(sidecars, _sort_key)
+    sort_prop, reverse = parse_sortby(sortby)
+    sort_config = SortConfig.infer_from_sidecars(sidecars, sort_prop, reverse)
+    ordered_sidecars = sort_sidecars(sidecars, sort_config)
 
     # group the sidecars
-    _group_keys = parse_group_keys(groupby)
+    _group_keys = parse_groupby(groupby)
     grouped_sidcars = group_sidecars(ordered_sidecars, _group_keys)
 
     # rewrite the sidecars with the changes
@@ -131,28 +134,62 @@ def load_sidecars(files: list[Path]) -> list[Sidecar]:
     return [Sidecar(fp, json.loads(fp.read_text())) for fp in files]
 
 
-def sort_sidecars(sidecars: list[Sidecar], sort_key: SortKey) -> list[Sidecar]:
+def sort_sidecars(sidecars: list[Sidecar], sort_config: SortConfig) -> list[Sidecar]:
     path_sorted = sorted(sidecars, key=lambda s: s.path)
-    key_sorted = sorted(path_sorted, key=sort_key.key, reverse=sort_key.reverse)
+    key_sorted = sorted(path_sorted, key=sort_config.key, reverse=sort_config.reverse)
     return key_sorted
 
 
-class SortKey(NamedTuple):
+class SortConfig(NamedTuple):
     key: Callable[[Sidecar], Any]
     reverse: bool
 
+    @classmethod
+    def infer_from_sidecars(
+        cls,
+        sidecars: list[Sidecar],
+        prop: str,
+        reverse: bool,
+    ) -> SortConfig:
+        if any(isinstance(sidecar.data.get(prop), int) for sidecar in sidecars):
+            # coerce everything to INT
+            key_fn = key_fn_factory(prop, default=sys.maxsize, converter=int)
+        elif any(isinstance(sidecar.data.get(prop), float) for sidecar in sidecars):
+            # coerce everything to FLOAT
+            key_fn = key_fn_factory(prop, default=float(sys.maxsize), converter=float)
+        else:
+            # coerce everything to STR
+            key_fn = key_fn_factory(prop, default="", converter=str)
 
-def parse_sort_key(s: str) -> SortKey:
+        return cls(key_fn, reverse)
+
+
+T = TypeVar("T", int, float, str)
+
+
+def key_fn_factory(
+    prop: str,
+    /,
+    *,
+    default: T,
+    converter: Callable[[Any], T],
+) -> Callable[[Sidecar], tuple[T, str]]:
+    def key_fn(sidecar: Sidecar) -> tuple[T, str]:
+        try:
+            return (converter(sidecar.data[prop]), str(sidecar.path))
+        except (TypeError, KeyError):
+            return (default, str(sidecar.path))
+
+    return key_fn
+
+
+def parse_sortby(s: str) -> tuple[str, bool]:
     prop, _, direction = s.partition(":")
     reverse = direction == "desc"
-
-    def key(sidecar: Sidecar) -> Any:
-        return sidecar.data.get(prop)
-
-    return SortKey(key, reverse)
+    return (prop, reverse)
 
 
-def parse_group_keys(s: str) -> tuple[str]:
+def parse_groupby(s: str) -> tuple[str]:
     return tuple(key.strip() for key in s.split(",") if key.strip())
 
 
