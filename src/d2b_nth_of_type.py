@@ -18,7 +18,7 @@ from typing import TypeVar
 from d2b.hookspecs import hookimpl
 
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 
 class Defaults:
